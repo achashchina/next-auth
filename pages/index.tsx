@@ -3,8 +3,11 @@ import Image from 'next/image';
 import styles from '../styles/Home.module.css';
 import Link from 'next/link';
 import { getSession, useSession, signOut } from 'next-auth/react';
+import { useTranslation } from 'react-i18next';
+import i18n from '../i18n/i18n';
+import { useEffect } from 'react';
 
-export default function Home() {
+export default function Home(props: any) {
   const { data: session } = useSession();
 
   const signoutHandler = () => {
@@ -39,9 +42,16 @@ function Guest() {
 
 // Authorize User
 function User({ session, signoutHandler }: { session: any; signoutHandler: any }) {
+  const { t } = useTranslation();
+  const { localization } = session;
+  
+  useEffect(() => {
+    i18n.changeLanguage(localization);
+  }, [localization]);
+
   return (
     <main className="container mx-auto text-center py-20">
-      <h3 className="text-4xl font-bold">Authorize User Homepage</h3>
+      <h3 className="text-4xl font-bold text-indigo-500"> {t('lbl_authUserPage')}</h3>
 
       <div className="details">
         <h5>{session.user.name}</h5>
@@ -49,16 +59,18 @@ function User({ session, signoutHandler }: { session: any; signoutHandler: any }
       </div>
 
       <div className="flex justify-center">
-        <button onClick={signoutHandler} className="mt-5 px-10 py-1 rounded-sm bg-indigo-500 bg-gray-50">
-          Sign Out
+        <button onClick={signoutHandler} className="mt-5 px-10 py-1 rounded-sm bg-indigo-500 text-gray-50">
+          {t('lbl_signOut')}
         </button>
       </div>
 
-      <div className="flex justify-center">
+      <div className="flex justify-center mt-3">
         <Link href={'/profile'}>
-          <span className="mt-5 px-10 py-1 rounded-sm bg-indigo-500 text-gray-50">Profile Page</span>
+          <span className="mt-5 px-10 py-1 rounded-sm bg-indigo-500 text-gray-50">{t('lbl_profilePage')}</span>
         </Link>
       </div>
+
+      {t('Welcome to React')}
     </main>
   );
 }

@@ -25,7 +25,6 @@ export default function Login() {
     if(status.error) {
       setLoginError(status.error)
     }
-
     if (status.ok) router.push(status.url);
   };
 
@@ -50,7 +49,6 @@ export default function Login() {
       <Head>
         <title>Login</title>
       </Head>
-
       <section className="w-3/4 mx-auto flex flex-col gap-10">
         <div className="title">
           <h1 className="text-gray-800 text-4xl font-bold py-4">Explore</h1>

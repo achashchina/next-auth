@@ -27,7 +27,6 @@ const useHttp = () => {
       }
       applayData(loadedUsers);
     } catch (err) {
-      console.log(err);
       setError(err.message || 'Something went wrong!');
     }
     setIsLoading(false);

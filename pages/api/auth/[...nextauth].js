@@ -19,12 +19,10 @@ export const authOptions = {
         });
 
         const result = await Users.findOne({ email: credentials.email });
-        console.log('result', result);
         if (!result) {
           throw new Error('No user Found with Email Please Sign Up...!');
         }
 
-        // compare()
         const checkPassword = await compare(credentials.password, result.password);
 
         // incorrect password
@@ -40,6 +38,18 @@ export const authOptions = {
   secret: 'tuyZ3mJYFwuxHw22yusO+wo7aW0+w99pmQTEQY2qIcg=',
   session: {
     strategy: 'jwt',
+  },
+  callbacks: {
+    jwt: async ({ token, user }) => {
+      user && (token.user = user);
+      return { ...token };
+    },
+    session: async ({ session, token }) => {
+      session.user.name = token.user.username || token.name;
+      session.user.id = token.user._id || token.user.id;
+      session.localization = token.user.localization || 'uk';
+      return session;
+    },
   },
 };
 
