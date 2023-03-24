@@ -1,5 +1,4 @@
 import Head from 'next/head';
-import Layout from '../layout/layout';
 import Link from 'next/link';
 import Image from 'next/image';
 import styles from '../styles/Form.module.css';
@@ -8,6 +7,7 @@ import { useState } from 'react';
 import { useFormik } from 'formik';
 import { useSession, signIn, signOut } from 'next-auth/react';
 import { useRouter } from 'next/router';
+import LayoutForm from '../layout/layout-form';
 
 export default function Login() {
   const [show, setShow] = useState(false);
@@ -45,7 +45,7 @@ export default function Login() {
   };
 
   return (
-    <Layout>
+    <LayoutForm>
       <Head>
         <title>Login</title>
       </Head>
@@ -102,6 +102,6 @@ export default function Login() {
           </Link>
         </p>
       </section>
-    </Layout>
+    </LayoutForm>
   );
 }

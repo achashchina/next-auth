@@ -1,5 +1,4 @@
 import Head from 'next/head';
-import Layout from '../layout/layout';
 import Link from 'next/link';
 import styles from '../styles/Form.module.css';
 import Image from 'next/image';
@@ -8,6 +7,7 @@ import { useState } from 'react';
 import { useFormik } from 'formik';
 import register_validate from '../lib/validate';
 import { useRouter } from 'next/router';
+import LayoutForm from '../layout/layout-form';
 
 export default function Register() {
   const [show, setShow] = useState({ password: false, cpassword: false });
@@ -38,7 +38,7 @@ export default function Register() {
   }
 
   return (
-    <Layout>
+    <LayoutForm>
       <Head>
         <title>Register</title>
       </Head>
@@ -116,6 +116,6 @@ export default function Register() {
           </Link>
         </p>
       </section>
-    </Layout>
+    </LayoutForm>
   );
 }

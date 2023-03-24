@@ -47,7 +47,7 @@ export const authOptions = {
     session: async ({ session, token }) => {
       session.user.name = token.user.username || token.name;
       session.user.id = token.user._id || token.user.id;
-      session.localization = token.user.localization || 'uk';
+      session.localization = token.user.localization || 'en';
       return session;
     },
   },

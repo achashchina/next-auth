@@ -4,6 +4,7 @@ import { SessionProvider } from 'next-auth/react';
 import { I18nextProvider } from 'react-i18next';
 import i18n from '../i18n/i18n';
 import NonSSRWrapper from '../components/NonSSRWrapper';
+import 'bootstrap/dist/css/bootstrap.css'
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
