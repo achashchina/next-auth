@@ -1,8 +1,9 @@
 import { signOut } from 'next-auth/react';
 import { useRouter } from 'next/router';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Dropdown from 'react-bootstrap/Dropdown';
 import classes from '../styles/Home.module.css';
+import i18n from '../i18n/i18n';
 
 const CustomToggle = React.forwardRef((props, ref) => (
   <a
@@ -19,7 +20,16 @@ const CustomToggle = React.forwardRef((props, ref) => (
 ));
 
 export const MenuDropdown = (props) => {
+  const { session } = props;
   const router = useRouter();
+  const { localization, user } = session;
+  const [userInitials, setUserInitials] = useState('');
+
+  useEffect(() => {
+    const words = user.name.split(' ');
+    setUserInitials(`${words[0][0].toLocaleUpperCase()}${words[1] ? words[1][0].toLocaleUpperCase() : ''}`);
+    i18n.changeLanguage(localization);
+  }, []);
 
   const onselectMenuItemHandler = (event) => {
     switch (event) {
@@ -37,7 +47,7 @@ export const MenuDropdown = (props) => {
 
   return (
     <Dropdown onSelect={(e) => onselectMenuItemHandler(e)} autoClose="outside">
-      <Dropdown.Toggle as={CustomToggle} userInitials={props.userInitials} id="dropdown-custom-components" />
+      <Dropdown.Toggle as={CustomToggle} userInitials={userInitials} id="dropdown-custom-components" />
 
       <Dropdown.Menu>
         <Dropdown.Item eventKey={'profile'}>Profile</Dropdown.Item>

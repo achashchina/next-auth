@@ -4,7 +4,7 @@ import { initReactI18next } from 'react-i18next';
 const resources = {
   en: {
     translation: {
-      'Welcome to React': 'Welcome to React and react',
+      'Welcome to React': 'Welcome to React',
       lbl_signOut: 'Sign Out',
       lbl_profilePage: 'Profile Page',
       lbl_authUserPage: 'Authorize User Homepage'
