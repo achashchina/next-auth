@@ -23,7 +23,7 @@ export default function MainLayout({ children }) {
             {session ? <MenuDropdown session={session}></MenuDropdown> : ''}
           </div>
         </div>
-        <main className="container mx-auto text-center px-0 mt-2">{children}</main>
+        <main className="mx-0 text-center px-10 mt-2">{children}</main>
       </div>
     </div>
   );

@@ -3,7 +3,7 @@ import GoogleProvider from 'next-auth/providers/google';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import { compare } from 'bcryptjs';
 import connectMongo from '../../../db/connection';
-import Users from '../../../model/Schema';
+import Users from '../../../model/UsersSchema';
 
 export const authOptions = {
   providers: [

@@ -9,7 +9,6 @@ import MainLayout from '../layout/main-layout';
 
 export default function App({ Component, pageProps }: AppProps) {
   const { session } = pageProps;
-  console.log(session)
   return (
     <NonSSRWrapper>
       <I18nextProvider i18n={i18n}>

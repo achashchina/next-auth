@@ -8,6 +8,11 @@
   @apply focus:outline-none border-none;
 }
 
+.input_text_search {
+  @apply block bg-white w-full border border-slate-300 rounded-md py-2 pl-9 pr-3 shadow-sm placeholder:italic placeholder:text-slate-400 sm:text-sm;
+  @apply focus:outline-none focus:border-slate-500 focus:ring-sky-500 ring-1 
+}
+
 .button {
   @apply w-full bg-gradient-to-r from-blue-500 to-indigo-500 rounded-md;
   @apply py-3 text-gray-50 text-lg;
