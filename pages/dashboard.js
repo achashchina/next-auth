@@ -3,46 +3,37 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { HiAtSymbol, HiPhone } from 'react-icons/hi';
 import SearchInput from '../components/search-input';
+import { useDispatch, useSelector } from 'react-redux';
+import { getCustomersList } from '../store/customer';
+import Spinner from '../components/spinner/spinner';
 
 const Dashboard = () => {
+  const dispatch = useDispatch();
+  const { customerList, isCustomersLoaded } = useSelector(({ customer }) => customer);
   const [customers, setCustomers] = useState([]);
   const router = useRouter();
 
   const cardClassName = 'w-30% h-52 shadow-[0_8px_30px_rgb(0,0,0,0.12)] flex flex-col p-3';
 
   useEffect(() => {
-    async function fetchData() {
-      const options = {
-        method: 'GET',
-        headers: { 'Content-Type': 'application/json' },
-        // body: JSON.stringify(),
-      };
+    refresh();
+  }, [isCustomersLoaded]);
 
-      const res = await fetch('/api/customers-list', options);
-      const data = await res.json();
-      setCustomers(data.list);
-    }
-    fetchData();
-  }, []);
-
-  const selectCustomerHandler = async (id) => {
-    const options = {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ id }),
-    };
-    const res = await fetch('/api/customer', options);
-    const data = await res.json();
-    if (data.status) {
-      router.push({
-        pathname: '/customer-detail',
-        query: { id },
-      });
-    }
-    console.log(data);
+  const refresh = async () => {
+    dispatch(getCustomersList());
+    setCustomers(customerList);
   };
 
-  return (
+  const selectCustomerHandler = async (id) => {
+    router.push({
+      pathname: '/customer',
+      query: { id },
+    });
+  };
+
+  return !isCustomersLoaded ? (
+    <Spinner />
+  ) : (
     <div className="flex flex-col">
       <div>
         <SearchInput />
