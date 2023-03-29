@@ -31,12 +31,23 @@ const Dashboard = () => {
     });
   };
 
+  const onSearchHandler = (searchValue) => {
+    const filtredList = customerList.filter(
+      (c) =>
+        c.firstName.toLocaleLowerCase().includes(searchValue) ||
+        c.lastName.toLocaleLowerCase().includes(searchValue) ||
+        c.email.toLocaleLowerCase().includes(searchValue) ||
+        c.phone.toLocaleLowerCase().includes(searchValue),
+    );
+    setCustomers(filtredList);
+  };
+
   return !isCustomersLoaded ? (
     <Spinner />
   ) : (
     <div className="flex flex-col">
       <div>
-        <SearchInput />
+        <SearchInput onSearchHandler={onSearchHandler} />
       </div>
       <div className="flex flex-wrap flex-3 gap-40 mt-7">
         {customers.map((c) => (

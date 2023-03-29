@@ -24,7 +24,7 @@ export default function Register() {
     validate: register_validate,
   });
 
-  async function onSubmit(values) {
+  const onSubmit = async (values) => {
     const options = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -35,7 +35,7 @@ export default function Register() {
 
     const data = await res.json();
     if (data) router.push('/');
-  }
+  };
 
   return (
     <LayoutForm>

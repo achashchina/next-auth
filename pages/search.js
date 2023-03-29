@@ -1,7 +1,14 @@
-import { getSession } from "next-auth/react";
+import { getSession } from 'next-auth/react';
+import SearchInput from '../components/search-input';
 
 const Search = () => {
-  return <div>Search</div>;
+  const onSearchHandler = ()=> {}
+  return (
+    <>
+      <div>Search</div>
+      <SearchInput onSearchHandler={onSearchHandler} />
+    </>
+  );
 };
 
 export default Search;
