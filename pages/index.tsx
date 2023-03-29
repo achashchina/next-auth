@@ -3,6 +3,9 @@ import Link from 'next/link';
 import { getSession, useSession } from 'next-auth/react';
 import { useTranslation } from 'react-i18next';
 import classes from '../styles/Home.module.css';
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { setActivePathAction } from '../store/activePage';
 
 export default function Home(props: any) {
   const { data: session } = useSession();
@@ -46,6 +49,13 @@ function Guest() {
 // Authorize User
 function User({ session }: { session: any }) {
   const { t } = useTranslation();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    //@ts-ignore
+    dispatch(setActivePathAction('/'));
+  }, []);
+
   return (
     <>
       <h3 className="text-4xl font-bold text-indigo-500"> {t('lbl_authUserPage')}</h3>

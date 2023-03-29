@@ -5,6 +5,7 @@ import { HiAtSymbol, HiPhone } from 'react-icons/hi';
 import SearchInput from '../components/search-input';
 import { useDispatch, useSelector } from 'react-redux';
 import { getCustomersList } from '../store/customer';
+import { setActivePathAction } from '../store/activePage';
 import Spinner from '../components/spinner/spinner';
 
 const Dashboard = () => {
@@ -18,6 +19,10 @@ const Dashboard = () => {
   useEffect(() => {
     refresh();
   }, [isCustomersLoaded]);
+
+  useEffect(() => {
+    dispatch(setActivePathAction('/dashboard'));
+  }, []);
 
   const refresh = async () => {
     dispatch(getCustomersList());

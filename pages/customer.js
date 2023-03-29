@@ -10,8 +10,6 @@ const CustomerDetail = () => {
   const [customer, setCustomer] = useState();
 
   useEffect(() => {
-    console.log(customerList);
-    console.log(router.query.id);
     setCustomer(customerList.find((c) => c._id === router.query.id));
   }, []);
   return !customer ? <Spinner /> : <div>{customer.firstName}</div>;
