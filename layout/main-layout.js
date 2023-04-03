@@ -13,7 +13,7 @@ export default function MainLayout({ children }) {
   };
 
   return (
-    <div className={`h-screen bg-slate-50 rounded-md grid ${menuOpen ? 'lg:grid-cols-[250px_auto]' : 'lg:grid-cols-[70px_auto]'}`}>
+    <div className={`min-h-screen bg-slate-50 rounded-md grid ${menuOpen ? 'lg:grid-cols-[250px_auto]' : 'lg:grid-cols-[70px_auto]'}`}>
       <div className="bg-slate-700 z-10">
         <Sidebar menuOpen={menuOpen} handleMenuOpen={handleMenuOpen}></Sidebar>
       </div>

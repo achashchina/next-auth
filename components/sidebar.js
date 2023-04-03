@@ -6,11 +6,12 @@ import { useSelector } from 'react-redux';
 const Sidebar = (props) => {
   const { pathname } = useSelector(({ activePage }) => activePage);
   const [activeTab, setActiveTab] = useState();
-  
 
   const { menuOpen } = props;
 
-  useEffect(()=> {setActiveTab(pathname.replace('/','')); }, [pathname])
+  useEffect(() => {
+    setActiveTab(pathname.replace('/', ''));
+  }, [pathname]);
 
   const handleMenuOpen = () => {
     props.handleMenuOpen();
@@ -21,37 +22,42 @@ const Sidebar = (props) => {
     menuOpen ? 'justify-start pl-2' : 'justify-center'
   }`;
 
-  const liClassName = `hover:bg-slate-400`
+  const liClassName = `hover:bg-slate-50`;
+  const textGradient = 'font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-teal-500 to-blue-500 pl-1';
 
   return (
     <div className="flex flex-col">
-      <button className="bg-grey-light font-bold py-4 px-4 rounded inline-flex items-center" onClick={handleMenuOpen}>
+      <button className="bg-grey-light font-bold py-4 px-4 rounded inline-flex items-center text-te" onClick={handleMenuOpen}>
         {toggleIcon}
       </button>
       <ul className="text-gray-50 pl-0">
-        <li className={`${liClassName} ${activeTab === '' ? 'bg-slate-400': ''}`}>
+        <li className={`${liClassName} ${activeTab === '' ? 'bg-slate-50' : ''}`}>
           <Link href={'/'} className={linkClassName}>
-            <HiHome color="white" size={25} /> {menuOpen && <span className="pl-1">Home</span>}
+            <HiHome className={!activeTab === '' ? 'text-slate-50' : 'text-teal-500'} size={25} />{' '}
+            {menuOpen && <span className={textGradient}>Home</span>}
           </Link>
         </li>
-        <li className={`${liClassName} ${activeTab === 'dashboard' ? 'bg-slate-400': ''}`}>
+        <li className={`${liClassName} ${activeTab === 'dashboard' ? 'bg-slate-50' : ''}`}>
           <Link href={'dashboard'} className={linkClassName}>
-            <HiViewList color="white" size={25} /> {menuOpen && <span className="pl-1">Dashboard</span>}
+            <HiViewList className={!activeTab === '' ? 'text-slate-50' : 'text-teal-500'} size={25} />{' '}
+            {menuOpen && <span className={textGradient}>Dashboard</span>}
           </Link>
         </li>
-        <li className={`${liClassName} ${activeTab === 'search' ? 'bg-slate-400': ''}`}>
+        <li className={`${liClassName} ${activeTab === 'search' ? 'bg-slate-50' : ''}`}>
           <Link href={'search'} className={linkClassName}>
-            <HiSearch color="white" size={25} /> {menuOpen && <span className="pl-1">Search</span>}
+            <HiSearch className={!activeTab === '' ? 'text-slate-50' : 'text-teal-500'} size={25} />{' '}
+            {menuOpen && <span className={textGradient}>Search</span>}
           </Link>
         </li>
         {/* <li className="hover:bg-slate-400">
           <Link href={'messenger'} className={liClassName}>
-            <HiChat color="white" size={25} /> {menuOpen && <span className="pl-1">Messenger</span>}
+            <HiChat className={!activeTab === '' ? 'text-slate-50' : 'text-teal-500'} size={25} /> {menuOpen && <span className={textGradient}>Messenger</span>}
           </Link>
         </li> */}
-        <li className={`${liClassName} ${activeTab === 'contact-us' ? 'bg-slate-400': ''}`}>
+        <li className={`${liClassName} ${activeTab === 'contact-us' ? 'bg-slate-50' : ''}`}>
           <Link href={'contact-us'} className={linkClassName}>
-            <HiUserGroup color="white" size={25} /> {menuOpen && <span className="pl-1">Contact Us</span>}
+            <HiUserGroup className={!activeTab === '' ? 'text-slate-50' : 'text-teal-500'} size={25} />{' '}
+            {menuOpen && <span className={textGradient}>Contact Us</span>}
           </Link>
         </li>
       </ul>

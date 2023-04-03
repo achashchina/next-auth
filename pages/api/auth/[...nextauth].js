@@ -40,14 +40,39 @@ export const authOptions = {
     strategy: 'jwt',
   },
   callbacks: {
-    jwt: async ({ token, user }) => {
-      user && (token.user = user);
-      return { ...token };
+    jwt: async ({ token, user, account }) => {
+      if (user && account) {
+        token.user = user;
+        token.account = account;
+        return {
+          ...token,
+          accessToken: token.account.access_token,
+          accessTokenExpires: Date.now() + token.account.expires_at * 1000,
+          refreshToken: token.account.refresh_token ? token.account.refresh_token : '',
+        };
+      }
+      if (Date.now() < token.accessTokenExpires) {
+        return token
+      }
+
+      // Access token has expired, try to update it
+      // return refreshAccessToken(token)
     },
     session: async ({ session, token }) => {
-      session.user.name = token.user.username || token.name;
-      session.user.id = token.user._id || token.user.id;
+      if (token.account.provider === 'credentials') {
+        session.user = {
+          ...token.user,
+          name: token.user.username,
+          id: token.user.username,
+        };
+      }
+      if (token.account.provider === 'google') {
+        session.user = token.user;
+      }
+
       session.localization = token.user.localization || 'en';
+      session.accessToken = token.accessToken;
+      session.error = token.error;
       return session;
     },
   },

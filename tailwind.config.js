@@ -10,6 +10,9 @@ module.exports = {
   ],
   theme: {
     extend: {
+      colors: {
+        modalBackdrop: '#00000057',
+      },
       flex: {
         3: '0 0 30%',
       },
