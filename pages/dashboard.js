@@ -75,8 +75,8 @@ const Dashboard = () => {
         </div>
         <div className="flex flex-wrap flex-3 gap-40 mt-7">
           {customers.map((c) => (
-            <div key={c._id} className={cardClassName} onClick={() => selectCustomerHandler(c._id)}>
-              <CustomerCard customer={c} />
+            <div key={c._id} className={cardClassName} >
+              <CustomerCard customer={c} selectCustomer={() => selectCustomerHandler(c._id)}/>
             </div>
           ))}
         </div>

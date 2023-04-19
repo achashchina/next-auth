@@ -34,9 +34,9 @@ export const getCustomersList = () => async (dispatch) => {
       headers: { 'Content-Type': 'application/json' },
     };
 
-    const res = await fetch('/api/customers-list', options);
+    const res = await fetch('/api/customers', options);
     const data = await res.json();
-    dispatch(getAllCustomers({ customerList: data.list }));
+    dispatch(getAllCustomers({ customerList: data.result }));
   } catch (e) {
     return console.error(e.message);
   }
