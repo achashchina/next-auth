@@ -15,7 +15,9 @@ const resources = {
       'Welcome to React': 'Ласкаво просимо до реакту',
       lbl_signOut: 'Вийти',
       lbl_profilePage: 'Сторінка профайлу',
-      lbl_authUserPage: 'Сторінка авторизованного користувача'
+      lbl_authUserPage: 'Сторінка авторизованного користувача',
+      // 'Loss': 'Затрати',
+      // 'Cost': 'Собівартість'
     },
   },
 };

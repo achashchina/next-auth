@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import { HiChevronDoubleLeft, HiChevronDoubleRight, HiHome, HiViewList, HiSearch, HiUserGroup, HiChat } from 'react-icons/hi';
+import { HiChevronDoubleLeft, HiChevronDoubleRight, HiHome, HiViewList, HiSearch, HiUserGroup, HiChat, HiOfficeBuilding } from 'react-icons/hi';
 import { useSelector } from 'react-redux';
 
 const Sidebar = (props) => {
@@ -41,6 +41,12 @@ const Sidebar = (props) => {
           <Link href={'dashboard'} className={linkClassName}>
             <HiViewList className={!activeTab === '' ? 'text-slate-50' : 'text-teal-500'} size={25} />{' '}
             {menuOpen && <span className={textGradient}>Dashboard</span>}
+          </Link>
+        </li>
+        <li className={`${liClassName} ${activeTab === 'manufacture' ? 'bg-slate-50' : ''}`}>
+          <Link href={'manufacture'} className={linkClassName}>
+            <HiOfficeBuilding className={!activeTab === '' ? 'text-slate-50' : 'text-teal-500'} size={25} />{' '}
+            {menuOpen && <span className={textGradient}>Manufacture</span>}
           </Link>
         </li>
         <li className={`${liClassName} ${activeTab === 'search' ? 'bg-slate-50' : ''}`}>

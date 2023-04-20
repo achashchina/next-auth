@@ -70,7 +70,7 @@ export const authOptions = {
         session.user = token.user;
       }
 
-      session.localization = token.user.localization || 'en';
+      session.localization = token.user.localization || 'uk';
       session.accessToken = token.accessToken;
       session.error = token.error;
       return session;
