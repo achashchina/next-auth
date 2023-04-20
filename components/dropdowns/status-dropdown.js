@@ -9,7 +9,7 @@ import {
   HiOutlineCurrencyDollar,
 } from 'react-icons/hi';
 
-import StatusEnum from '../utils/statusEnum';
+import StatusEnum from '../../utils/statusEnum';
 
 const options = [
   { name: 'New', icon: <HiPaperClip className="text-teal-700" size={30} /> },

@@ -1,7 +1,9 @@
+import LossTable from "../../tables/loss-table";
+
 const LossComponent = () => {
   return (
     <>
-      <div>LossComponent</div>
+      <LossTable/>
     </>
   );
 };

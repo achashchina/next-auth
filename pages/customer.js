@@ -10,7 +10,7 @@ import { getCustomersList, selectCustomerAction } from '../store/customer';
 import { getEventsList } from '../store/customer-events';
 import CustomerEventsTable from '../components/tables/customer-events-table';
 import CreateEventModal from '../components/modals/create-event-modal';
-import CustomerStatusDropdown from '../components/status-dropdown';
+import CustomerStatusDropdown from '../components/dropdowns/status-dropdown';
 
 const CustomerDetail = () => {
   const dispatch = useDispatch();

@@ -1,10 +1,7 @@
 import { useFormik } from 'formik';
-import { useDispatch } from 'react-redux';
-import { getEventsList } from '../../store/customer-events';
 
 const CreateEventModal = (props) => {
   const { showModal, closeModalHandler, customer, refresh } = props;
-  const dispatch = useDispatch();
 
   const onSubmit = async (values) => {
    
