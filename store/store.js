@@ -3,11 +3,13 @@ import { combineReducers } from 'redux';
 import customer from './customer';
 import customerEvents from './customer-events';
 import activePage from './activePage';
+import lossList from './loss-list';
 
 const reducer = combineReducers({
   customer,
   activePage,
-  customerEvents
+  customerEvents,
+  lossList,
 });
 
 const store = configureStore({

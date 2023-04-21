@@ -1,14 +1,16 @@
 import moment from 'moment';
-import { HiDotsVertical } from 'react-icons/hi';
 import { createColumnHelper, flexRender, getCoreRowModel, useReactTable } from '@tanstack/react-table';
 import ActionsDropdown from '../dropdowns/table-actions-dropdown';
+import { useEffect } from 'react';
+import { getLossList } from '../../store/loss-list';
+import { useDispatch, useSelector } from 'react-redux';
 
 const columnHelper = createColumnHelper();
 
 const columns = [
-  columnHelper.accessor((row) => row.id, {
+  columnHelper.accessor((row) => row, {
     id: 'btns',
-    cell: (info) => <ActionsDropdown lossId={info.getValue()} />,
+    cell: (info) => <ActionsDropdown loss={info.getValue()} />,
     header: () => <span></span>,
   }),
   columnHelper.accessor((row) => row.date, {
@@ -26,40 +28,20 @@ const columns = [
   }),
 ];
 
-const LossTable = (props) => {
-  const { eventsList } = props;
+const LossTable = () => {
+  const dispatch = useDispatch();
+  const { list } = useSelector(({ lossList }) => lossList);
+
+  useEffect(() => {
+    getData();
+  }, [list.length]);
+
+  const getData = async () => {
+    await dispatch(getLossList());
+  };
 
   const table = useReactTable({
-    data: [
-      {
-        id: '1111',
-        date: new Date(),
-        lossType: 'Test',
-        amount: 3000,
-        created: {
-          createdBy: 'Test',
-          createdAt: new Date(),
-        },
-        modified: {
-          modifiedBy: 'Est',
-          modifiedAt: '',
-        },
-      },
-      {
-        id: '222',
-        date: new Date(),
-        lossType: 'Test test',
-        amount: 5000,
-        created: {
-          createdBy: 'Test',
-          createdAt: new Date(),
-        },
-        modified: {
-          modifiedBy: 'Est',
-          modifiedAt: '',
-        },
-      },
-    ],
+    data: list ? list : [],
     columns,
     getCoreRowModel: getCoreRowModel(),
   });

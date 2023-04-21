@@ -1,65 +1,48 @@
 import { useFormik } from 'formik';
 import moment from 'moment';
-import { useEffect, useState } from 'react';
-
-const initLoss = {
-  id: '',
-  date: '',
-  lossType: '',
-  amount: 0,
-  created: {
-    createdBy: '',
-    createdAt: '',
-  },
-  modified: {
-    modifiedBy: '',
-    modifiedAt: '',
-  },
-  description: '',
-};
-
-// {
-
-//   }
+import { useSession } from 'next-auth/react';
+import { useDispatch } from 'react-redux';
+import { getLossList } from '../../store/loss-list';
 
 const LossItemModal = (props) => {
-  const { lossId, editMode, setShowModal } = props;
-  const [lossItem, setLossItem] = useState(initLoss);
+  const { loss, editMode, setShowModal } = props;
+  const { data: session } = useSession();
+  const dispatch = useDispatch();
 
-  const onSubmit = async (values) => {};
+  const onSubmit = async (values) => {
+    setShowModal(false);
+    if (editMode || !formik.dirty) return;
+    try {
+      const options = {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          ...values,
+          modified: {
+            modifiedBy: session.user.name,
+            modifiedAt: new Date(),
+          },
+        }),
+      };
+
+      const res = await fetch('/api/pnl/loss', options);
+      const data = await res.json();
+      if (data.status) {
+        dispatch(getLossList());
+      }
+    } catch (e) {
+      return console.error(e.message);
+    }
+  };
 
   const formik = useFormik({
-    initialValues: lossItem,
+    initialValues: loss,
     enableReinitialize: true,
     onSubmit,
     validate: '',
   });
 
-  useEffect(() => {
-    getData();
-  }, []);
-
-  const getData = async () => {
-    setLossItem({
-      id: '1111',
-      date: new Date(),
-      lossType: 'Test',
-      amount: 3000,
-      created: {
-        createdBy: 'Test',
-        createdAt: new Date(),
-      },
-      modified: {
-        modifiedBy: 'Est',
-        modifiedAt: '',
-      },
-      description: '',
-    });
-  };
-
-  const onButtonsClickHandler = () => {
-    setShowModal(false);
-  };
+  const editable = !editMode ? 'shadow border' : 'bg-gray-100';
 
   return (
     <>
@@ -70,21 +53,13 @@ const LossItemModal = (props) => {
               <div className="relative p-6 flex-auto">
                 <div className="bg-gray-100 shadow-md rounded px-8 pt-6 pb-8 w-full">
                   <div className="flex mb-2">
-                    <label className="w-1/4 text-black text-sm font-bold mb-1 items-center flex">Date</label>
-                    <input
-                      name="date"
-                      type="date"
-                      {...formik.getFieldProps('date')}
-                      className="shadow appearance-none border outline-none rounded w-full py-2 px-1 text-black"
-                    />
-                  </div>
-                  <div className="flex mb-2">
                     <label className="w-1/4 text-black text-sm font-bold mb-1 items-center flex">Loss type</label>
                     <input
                       name="lossType"
                       type="text"
+                      readOnly={editMode}
                       {...formik.getFieldProps('lossType')}
-                      className="shadow appearance-none border outline-none rounded w-full py-2 px-1 text-black"
+                      className={`${editable} appearance-none outline-none rounded w-full py-2 px-1 text-black`}
                     />
                   </div>
                   <div className="flex mb-2">
@@ -92,36 +67,37 @@ const LossItemModal = (props) => {
                     <input
                       name="amount"
                       type="number"
+                      readOnly={editMode}
                       {...formik.getFieldProps('amount')}
-                      className="shadow appearance-none border outline-none rounded w-full py-2 px-1 text-black"
+                      className={`${editable} appearance-none outline-none rounded w-full py-2 px-1 text-black`}
                     />
                   </div>
                   <div className="flex mb-2">
                     <label className="w-1/4 text-black text-sm font-bold mb-1 items-center flex">Description</label>
                     <textarea
+                      readOnly={editMode}
                       name="description"
                       {...formik.getFieldProps('description')}
-                      className="shadow appearance-none outline-none rounded w-full py-2 px-1 text-black"
+                      className={`${editable} appearance-none outline-none rounded w-full py-2 px-1 text-black`}
                     />
                   </div>
 
                   <div className="flex flex-col">
                     <span className="text-left text-xs">{`Created: ${formik.values.created.createdBy}  / ${moment(
                       formik.values.created.createdAt,
-                    ).format('D MMMM YYYY')}`}</span>
+                    ).format('LLL')}`}</span>
                     <span className="text-left text-xs">{`Last update:  ${formik.values.modified.modifiedBy} / ${moment(
                       formik.values.modified.modifiedAt,
-                    ).format('D MMMM YYYY')}`}</span>
+                    ).format('LLL')}`}</span>
                   </div>
                 </div>
               </div>
               <div className="flex items-center justify-end p-6 border-t border-solid border-blueGray-200 rounded-b">
                 <button
                   className="text-white bg-blue-500 active:bg-blue-700 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1"
-                  type="button"
-                  onClick={() => onButtonsClickHandler(true)}
+                  type="submit"
                 >
-                  CLOSE
+                  {editMode || !formik.dirty ? 'CLOSE' : 'SAVE'}
                 </button>
               </div>
             </div>

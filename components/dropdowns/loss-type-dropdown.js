@@ -1,21 +1,14 @@
 import { useState } from 'react';
 import { HiDotsVertical, HiOutlineLightBulb, HiOutlinePencil } from 'react-icons/hi';
-import LossItemModal from '../modals/loss-item-modal';
 
-const ActionsDropdown = (props) => {
-  const { loss } = props;
+
+
+const LossTypeDropdown = (props) => {
+  const { current } = props;
   const [open, setOpen] = useState(false);
-  const [showModal, setShowModal] = useState(false);
-  const [editMode, setEditMode] = useState(false);
 
   const toggleDropdownHandler = () => {
     setOpen(!open);
-  };
-
-  const openLossModal = (mode) => {
-    setEditMode(mode);
-    toggleDropdownHandler();
-    setShowModal(true, loss);
   };
 
   return (
@@ -36,7 +29,7 @@ const ActionsDropdown = (props) => {
                 <button
                   type="button"
                   className="z-20 inline-flex w-full py-2 ml-3 text-sm text-gray-700 hover:bg-gray-100"
-                  onClick={() => openLossModal(true)}
+                  onClick={() => {}}
                 >
                   <div className="inline-flex items-center">View</div>
                 </button>
@@ -46,7 +39,7 @@ const ActionsDropdown = (props) => {
                 <button
                   type="button"
                   className="z-20 inline-flex w-full py-2 ml-3 text-sm text-gray-700 hover:bg-gray-100"
-                  onClick={() => openLossModal(false)}
+                  onClick={() => {}}
                 >
                   <div className="inline-flex items-center">Edit</div>
                 </button>
@@ -58,9 +51,8 @@ const ActionsDropdown = (props) => {
           ''
         )}
       </div>
-      {showModal ? <LossItemModal editMode={editMode} loss={loss} setShowModal={setShowModal} /> : <></>}
     </>
   );
 };
 
-export default ActionsDropdown;
+export default LossTypeDropdown;
