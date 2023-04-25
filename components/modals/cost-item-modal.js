@@ -2,17 +2,20 @@ import { useFormik } from 'formik';
 import moment from 'moment';
 import { useSession } from 'next-auth/react';
 import { useDispatch } from 'react-redux';
-import { getLossList } from '../../store/loss-list';
-import LossTypeDropdown from '../dropdowns/loss-type-dropdown';
+import { getCostList } from '../../store/cost-list';
 import { HiX } from 'react-icons/hi';
+import DatePicker from 'react-datepicker';
 
-const LossItemModal = (props) => {
-  const { loss, editMode, setShowModal, isNew = false } = props;
+import 'react-datepicker/dist/react-datepicker.css';
+import { useState } from 'react';
+
+const CostItemModal = (props) => {
+  const { cost, editMode, setShowModal, isNew = false } = props;
   const { data: session } = useSession();
   const dispatch = useDispatch();
 
   const onSubmit = async (values) => {
-    console.log(values);
+    console.log(values, formik.dirty);
     setShowModal(false);
     if (editMode || !formik.dirty) return;
     try {
@@ -29,11 +32,11 @@ const LossItemModal = (props) => {
         }),
       };
 
-      const res = await fetch('/api/pnl/loss', options);
-      const data = await res.json();
-      if (data.status) {
-        dispatch(getLossList());
-      }
+      //   const res = await fetch('/api/pnl/cost', options);
+      //   const data = await res.json();
+      //   if (data.status) {
+      //     dispatch(getCostList());
+      //   }
     } catch (e) {
       return console.error(e.message);
     }
@@ -42,7 +45,7 @@ const LossItemModal = (props) => {
   const formik = useFormik({
     initialValues: isNew
       ? {
-          lossType: '',
+          period: new Date(),
           amount: 0,
           created: {
             createdBy: '',
@@ -54,18 +57,20 @@ const LossItemModal = (props) => {
           },
           description: '',
         }
-      : loss,
-    enableReinitialize: true,
+      : cost,
     onSubmit,
     validate: '',
   });
 
-  const onLossTypeChangeHandler = (value) => {
-    formik.setFieldValue('lossType', value);
-    formik.setFieldTouched('lossType', true);
+  const editable = !editMode ? 'shadow border' : 'bg-gray-100';
+
+  const onDateSelectHandler = (date) => {
+    formik.setFieldValue('period', date);
+    formik.setFieldTouched('period', true);
   };
 
-  const editable = !editMode ? 'shadow border' : 'bg-gray-100';
+  const onCalculateCostHandler = () => {
+  };
 
   return (
     <>
@@ -83,24 +88,15 @@ const LossItemModal = (props) => {
               <div className="relative p-6 flex-auto">
                 <div className="bg-gray-100 shadow-md rounded px-8 pt-6 pb-8 w-full">
                   <div className="flex mb-2">
-                    <label className="w-1/4 text-black text-sm font-bold mb-1 items-center flex">Loss type</label>
-                    <div className="border w-full bg-white py-2 px-1 rounded">
-                      <LossTypeDropdown
-                        current={formik.values.lossType}
-                        readonly={isNew || !editMode ? false : true}
-                        onLossTypeChangeHandler={onLossTypeChangeHandler}
+                    <label className="w-1/4 text-black text-sm font-bold mb-1 items-center flex">Period</label>
+                    <div className="flex justify-start w-full text-start">
+                      <DatePicker
+                        selected={formik.values.period}
+                        onChange={(date) => onDateSelectHandler(date)}
+                        dateFormat="MMMM"
+                        showMonthYearPicker
                       />
                     </div>
-                  </div>
-                  <div className="flex mb-2">
-                    <label className="w-1/4 text-black text-sm font-bold mb-1 items-center flex">Amount</label>
-                    <input
-                      name="amount"
-                      type="number"
-                      readOnly={editMode}
-                      {...formik.getFieldProps('amount')}
-                      className={`${editable} appearance-none outline-none rounded w-full py-2 px-1 text-black`}
-                    />
                   </div>
                   <div className="flex mb-2">
                     <label className="w-1/4 text-black text-sm font-bold mb-1 items-center flex">Description</label>
@@ -111,6 +107,25 @@ const LossItemModal = (props) => {
                       className={`${editable} appearance-none outline-none rounded w-full py-2 px-1 text-black`}
                     />
                   </div>
+
+                  <div className="flex mb-2">
+                    <label className="w-1/4 text-black text-sm font-bold mb-1 items-center flex">Amount</label>
+                    <input
+                      name="amount"
+                      type="number"
+                      readOnly={true}
+                      {...formik.getFieldProps('amount')}
+                      className={`bg-gray-100 appearance-none outline-none rounded w-full py-2 px-1 text-black`}
+                    />
+                  </div>
+
+                  <button
+                    className="text-teal-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1"
+                    type="button"
+                    onClick={onCalculateCostHandler}
+                  >
+                    Calculate
+                  </button>
 
                   <div className="flex flex-col">
                     {!isNew ? (
@@ -133,7 +148,7 @@ const LossItemModal = (props) => {
                   className="text-white bg-blue-500 active:bg-blue-700 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1"
                   type="submit"
                 >
-                  {editMode || !formik.dirty ? 'CLOSE' : 'SAVE'}
+                  {!formik.dirty ? 'CLOSE' : 'SAVE'}
                 </button>
               </div>
             </div>
@@ -143,4 +158,4 @@ const LossItemModal = (props) => {
     </>
   );
 };
-export default LossItemModal;
+export default CostItemModal;

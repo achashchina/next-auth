@@ -1,10 +1,7 @@
+import CostTable from '../../tables/cost-table';
+
 const CostComponent = () => {
-    return (
-      <>
-        <div>CostComponent</div>
-      </>
-    );
-  };
-  
-  export default CostComponent;
-  
+  return <CostTable />;
+};
+
+export default CostComponent;
