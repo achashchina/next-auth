@@ -1,5 +1,6 @@
+import moment from 'moment';
 import connectMongo from '../../../db/connection';
-import Cost from '../../../model/CostSchema';
+import Loss from '../../../model/LossSchema';
 
 export default async function handler(req, res) {
   connectMongo().catch((error) => res.json({ error }));
@@ -7,16 +8,12 @@ export default async function handler(req, res) {
   let response;
 
   switch (req.method) {
-    case 'GET':
-      response = await Cost.find({});
-      break;
     case 'POST':
-      const newLoss = new Cost({ ...req.body });
-      response = await newLoss.save();
-      break;
-    case 'PATCH':
-      await Cost.findOneAndUpdate({ _id: req.body._id }, req.body);
-      response = await Cost.findOne({ _id: req.body._id });
+      const startOfMonth = new Date(moment().startOf('month').format('YYYY-MM-DD')).toISOString();
+      const endOfMonth = new Date(moment().endOf('month').format('YYYY-MM-DD')).toISOString();
+      response = await Loss.find({
+        date: { $gte: startOfMonth, $lte: endOfMonth },
+      });
       break;
 
     default:

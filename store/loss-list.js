@@ -29,7 +29,8 @@ export const getLossList = () => async (dispatch) => {
     const data = await res.json();
 
     if (data.status) {
-      dispatch(getAllLosses(data.response));
+      const list = data.response.map((item)=> ({...item }))
+      dispatch(getAllLosses(list));
     }
   } catch (e) {
     return console.error(e.message);

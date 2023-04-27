@@ -1,9 +1,9 @@
 import { Schema, model, models } from 'mongoose';
 
 const lossSchema = new Schema({
-  id: String,
   lossType: String,
   amount: Number,
+  date: Date,
   created: {
     createdBy: String,
     createdAt: String,

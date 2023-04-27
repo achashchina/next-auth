@@ -18,9 +18,9 @@ const columns = [
     cell: (info) => <ActionsDropdown loss={info.getValue()} />,
     header: () => <span></span>,
   }),
-  columnHelper.accessor((row) => row.created.createdAt, {
+  columnHelper.accessor((row) => row.date, {
     id: 'date',
-    cell: (info) => <span>{moment(info.getValue()).format('D MMMM YYYY')}</span>,
+    cell: (info) => <span>{moment(new Date(info.getValue())).format('MMMM')}</span>,
     header: () => <span>Date</span>,
   }),
   columnHelper.accessor('lossType', {

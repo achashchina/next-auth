@@ -5,6 +5,7 @@ import { useDispatch } from 'react-redux';
 import { getLossList } from '../../store/loss-list';
 import LossTypeDropdown from '../dropdowns/loss-type-dropdown';
 import { HiX } from 'react-icons/hi';
+import DatePicker from 'react-datepicker';
 
 const LossItemModal = (props) => {
   const { loss, editMode, setShowModal, isNew = false } = props;
@@ -12,7 +13,6 @@ const LossItemModal = (props) => {
   const dispatch = useDispatch();
 
   const onSubmit = async (values) => {
-    console.log(values);
     setShowModal(false);
     if (editMode || !formik.dirty) return;
     try {
@@ -42,6 +42,7 @@ const LossItemModal = (props) => {
   const formik = useFormik({
     initialValues: isNew
       ? {
+          date: new Date(),
           lossType: '',
           amount: 0,
           created: {
@@ -54,8 +55,7 @@ const LossItemModal = (props) => {
           },
           description: '',
         }
-      : loss,
-    enableReinitialize: true,
+      : {...loss, date: new Date(loss.date)},
     onSubmit,
     validate: '',
   });
@@ -63,6 +63,11 @@ const LossItemModal = (props) => {
   const onLossTypeChangeHandler = (value) => {
     formik.setFieldValue('lossType', value);
     formik.setFieldTouched('lossType', true);
+  };
+
+  const onDateSelectHandler = (date) => {
+    formik.setFieldValue('date', date);
+    formik.setFieldTouched('date', true);
   };
 
   const editable = !editMode ? 'shadow border' : 'bg-gray-100';
@@ -82,6 +87,17 @@ const LossItemModal = (props) => {
             <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
               <div className="relative p-6 flex-auto">
                 <div className="bg-gray-100 shadow-md rounded px-8 pt-6 pb-8 w-full">
+                  <div className="flex mb-2">
+                    <label className="w-1/4 text-black text-sm font-bold mb-1 items-center flex">Period</label>
+                    <div className="flex justify-start w-full text-start">
+                      <DatePicker
+                        selected={formik.values.date}
+                        onChange={(date) => onDateSelectHandler(date)}
+                        dateFormat="MMMM"
+                        showMonthYearPicker
+                      />
+                    </div>
+                  </div>
                   <div className="flex mb-2">
                     <label className="w-1/4 text-black text-sm font-bold mb-1 items-center flex">Loss type</label>
                     <div className="border w-full bg-white py-2 px-1 rounded">

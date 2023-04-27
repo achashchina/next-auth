@@ -7,7 +7,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import Spinner from '../spinner/spinner';
 import SearchInput from '../search-input';
 import { HiViewGridAdd } from 'react-icons/hi';
-import LossItemModal from '../modals/loss-item-modal';
 import CostItemModal from '../modals/cost-item-modal';
 
 const columnHelper = createColumnHelper();

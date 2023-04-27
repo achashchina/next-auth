@@ -2,12 +2,11 @@ import { useFormik } from 'formik';
 import moment from 'moment';
 import { useSession } from 'next-auth/react';
 import { useDispatch } from 'react-redux';
-import { getCostList } from '../../store/cost-list';
 import { HiX } from 'react-icons/hi';
 import DatePicker from 'react-datepicker';
 
 import 'react-datepicker/dist/react-datepicker.css';
-import { useState } from 'react';
+import { getCostList } from '../../store/cost-list';
 
 const CostItemModal = (props) => {
   const { cost, editMode, setShowModal, isNew = false } = props;
@@ -32,11 +31,11 @@ const CostItemModal = (props) => {
         }),
       };
 
-      //   const res = await fetch('/api/pnl/cost', options);
-      //   const data = await res.json();
-      //   if (data.status) {
-      //     dispatch(getCostList());
-      //   }
+      const res = await fetch('/api/pnl/cost', options);
+      const data = await res.json();
+      if (data.status) {
+        dispatch(getCostList());
+      }
     } catch (e) {
       return console.error(e.message);
     }
@@ -57,7 +56,7 @@ const CostItemModal = (props) => {
           },
           description: '',
         }
-      : cost,
+      : {...cost, date: cost.date},
     onSubmit,
     validate: '',
   });
@@ -69,8 +68,27 @@ const CostItemModal = (props) => {
     formik.setFieldTouched('period', true);
   };
 
-  const onCalculateCostHandler = () => {
-  };
+  const onCalculateCostHandler = async () => {
+    // await dispatch(getLossList());
+    console.log(formik);
+    const options = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        period: formik.values.period,
+      }),
+    };
+    const res = await fetch('/api/pnl/loss-in-period', options);
+    const data = await res.json();
+    if(data.status) {
+        const summ = data.response.reduce((prev, curr)=> {
+            return prev + curr.amount
+        }, 0)
+
+        formik.setFieldValue('amount', summ*1.2/2000)
+        console.log(formik.values);
+    }
+  }
 
   return (
     <>
