@@ -49,7 +49,7 @@ export default function Login() {
       <Head>
         <title>Login</title>
       </Head>
-      <section className="w-3/4 mx-auto flex flex-col gap-10">
+      <section className="w-3/4 mx-auto flex flex-col">
         <div className="title">
           <h1 className="text-gray-800 text-4xl font-bold py-4">Explore</h1>
           <p className="w-3/4 mx-auto text-rose-400"> {loginError ? loginError: ''} </p>
